@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+  nodejs-app:
+    image: node:14
+    working_dir: /app
+    volumes:
+      - ./nodejs-app:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql-db
+
+  mysql-db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: app_database
+      MYSQL_USER: app_user
+      MYSQL_PASSWORD: app_password
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: mysql-db
+      PMA_PORT: 3306
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql-db
+
+  nginx-server:
+    image: nginx:latest
+    volumes:
+      - ./nginx-config:/etc/nginx/conf.d
+      - ./nodejs-app:/app
+    ports:
+      - "80:80"
+    depends_on:
+      - nodejs-app

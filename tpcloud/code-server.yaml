@@ -1,0 +1,20 @@
+version: "2.1"
+
+services:
+  code-server:
+    image: lscr.io/linuxserver/code-server
+    container_name: code-server
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - PASSWORD=12345678 # optional
+    volumes:
+      - vscode:/config
+      - /home/oussama/TP/:/config/workspace/
+    ports:
+      - 8443:8443
+    restart: unless-stopped
+
+volumes:
+  vscode:

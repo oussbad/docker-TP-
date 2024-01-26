@@ -1,0 +1,16 @@
+version: "3"
+services:
+   web:
+      image: postgres:13
+      restart: always
+      container_name: pgsql
+      ports:
+        - "5432:5432"
+      volumes:
+        - pgdata:/var/lib/postgresql/data
+
+      environment:
+           - POSTGRES_PASSWORD=hanan
+           - PGDATA =/var/lib/postgresql/data
+volumes:
+  pgdata:
